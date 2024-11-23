@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.addColumn('Borrows', 'isReturned', {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: false, // Varsayılan değer
+      defaultValue: false,
     });
   },
   async down(queryInterface, Sequelize) {
