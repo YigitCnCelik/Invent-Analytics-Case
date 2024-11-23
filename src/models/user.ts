@@ -1,13 +1,15 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
+import Book from "./book";
 
 class User extends Model {
   public id!: number;
   public name!: string;
+  public books?: Book[];
 
   public static associate(models: any) {
     User.belongsToMany(models.Book, {
       through: models.Borrow,
-      as: "borrowedBooks",
+      as: "books",
       foreignKey: "userId",
     });
   }

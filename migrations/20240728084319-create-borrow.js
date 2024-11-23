@@ -7,20 +7,27 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       bookId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       score: {
-        type: Sequelize.INTEGER
-      }
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      returnedAt: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Borrows');
-  }
+  },
 };

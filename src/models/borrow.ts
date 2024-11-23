@@ -5,6 +5,7 @@ class Borrow extends Model {
   public userId!: number;
   public bookId!: number;
   public score!: number | null;
+  public isReturned!: boolean;
 
   public static associate(models: any) {
     Borrow.belongsTo(models.User, { foreignKey: "userId" });
@@ -31,6 +32,11 @@ export const initBorrowModel = (sequelize: Sequelize) => {
       score: {
         type: DataTypes.INTEGER,
         allowNull: true,
+      },
+      isReturned: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
     },
     {
