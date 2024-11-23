@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
-    "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
+    "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "migrate": "npx sequelize-cli db:migrate"
   },
   "keywords": [],
   "author": "",
