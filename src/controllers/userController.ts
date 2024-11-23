@@ -125,6 +125,8 @@ export const returnBook = async (req: Request, res: Response) => {
 
     book.score = newScore;
     book.scoreCount = newScoreCount;
+
+    console.log(currentScore, scoreCount, newScore, newScoreCount, book.score, book.scoreCount);
     await book.save();
 
     res.status(204).send();

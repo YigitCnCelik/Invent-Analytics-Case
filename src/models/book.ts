@@ -30,7 +30,13 @@ export const initBookModel = (sequelize: Sequelize) => {
       score: {
         type: DataTypes.FLOAT,
         allowNull: true,
-      }
+      },
+      scoreCount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      
     },
     {
       sequelize,

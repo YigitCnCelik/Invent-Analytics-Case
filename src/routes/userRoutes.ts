@@ -34,8 +34,8 @@ router.post(
     param("id").isInt().withMessage("User ID must be an integer"),
     param("bookId").isInt().withMessage("Book ID must be an integer"),
     body("score")
-      .isInt({ min: 1, max: 10 })
-      .withMessage("Score must be an integer between 1 and 10"),
+      .isFloat({ min: 1, max: 10 })
+      .withMessage("Score must be an number between 1 and 10"),
   ],
   returnBook,
 );

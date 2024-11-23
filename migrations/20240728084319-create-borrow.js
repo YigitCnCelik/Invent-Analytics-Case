@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       score: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: true,
       },
       returnedAt: {
