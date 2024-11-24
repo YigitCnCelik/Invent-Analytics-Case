@@ -48,7 +48,7 @@ Ensure you have the following installed:
 1. **Clone the repository**:
    ```bash
    git clone <repository-url>
-   cd library-management
+   cd Invent Analytics Case
    ```
 
 2. **Start MySQL with Docker**:
@@ -75,13 +75,8 @@ Ensure you have the following installed:
    ```
 
 5. **Start the application**:
-   - For production:
      ```bash
      npm start
-     ```
-   - For development with live reload:
-     ```bash
-     npm run start:watch
      ```
 
 6. **Access the API**:
