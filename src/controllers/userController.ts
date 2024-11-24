@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User, Book, Borrow } from "../models";
 import { validationResult } from "express-validator";
 
+
 export const getUsers = async (req: Request, res: Response) => {
   const users = await User.findAll();
   res.json(users);
@@ -66,25 +67,33 @@ export const createUser = async (req: Request, res: Response) => {
 export const borrowBook = async (req: Request, res: Response) => {
   const { id, bookId } = req.params as { id: string; bookId: string };
 
+  const transaction = await Borrow.sequelize?.transaction();
+
   try {
-    const user = await User.findByPk(id);
-    const book = await Book.findByPk(bookId);
+    const user = await User.findByPk(id, { transaction });
+    const book = await Book.findByPk(bookId, { transaction });
 
     if (!user || !book) {
+      await transaction?.rollback();
       return res.status(404).send("User or Book not found.");
     }
 
     const existingBorrow = await Borrow.findOne({
       where: { bookId, isReturned: false },
+      transaction,
     });
 
     if (existingBorrow) {
+      await transaction?.rollback();
       return res.status(400).send("This book is already borrowed.");
     }
 
-    await Borrow.create({ userId: id, bookId, isReturned: false });
+    await Borrow.create({ userId: id, bookId, isReturned: false }, { transaction });
+
+    await transaction?.commit();
     res.status(204).send();
   } catch (error) {
+    await transaction?.rollback();
     res.status(500).send("An error occurred while borrowing the book.");
   }
 };
@@ -100,21 +109,26 @@ export const returnBook = async (req: Request, res: Response) => {
   const { id, bookId } = req.params;
   const { score } = req.body;
 
+  const transaction = await Borrow.sequelize?.transaction();
+
   try {
     const borrow = await Borrow.findOne({
       where: { userId: id, bookId, isReturned: false },
+      transaction,
     });
 
     if (!borrow) {
+      await transaction?.rollback();
       return res.status(404).send("Borrow record not found or already returned.");
     }
 
     borrow.isReturned = true;
     borrow.score = score;
-    await borrow.save();
+    await borrow.save({ transaction });
 
-    const book = await Book.findByPk(bookId);
+    const book = await Book.findByPk(bookId, { transaction });
     if (!book) {
+      await transaction?.rollback();
       return res.status(404).send("Book not found.");
     }
 
@@ -125,14 +139,15 @@ export const returnBook = async (req: Request, res: Response) => {
 
     book.score = newScore;
     book.scoreCount = newScoreCount;
+    await book.save({ transaction });
 
-    console.log(currentScore, scoreCount, newScore, newScoreCount, book.score, book.scoreCount);
-    await book.save();
-
+    await transaction?.commit();
     res.status(204).send();
   } catch (error) {
+    await transaction?.rollback();
     res.status(500).send("An error occurred while returning the book.");
   }
 };
+
 
 
