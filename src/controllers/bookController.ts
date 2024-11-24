@@ -4,7 +4,7 @@ import { validationResult } from "express-validator";
 
 export const getBooks = async (req: Request, res: Response) => {
   const books = await Book.findAll({
-    attributes: { exclude: ['score'] },
+    attributes: { exclude: ['scoreCount', 'score'] },
   });
   res.json(books);
 };
